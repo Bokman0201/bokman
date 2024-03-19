@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="groupInfo">
+    
+    	<insert id="addInfo">
+	INSERT INTO group_info (groups_id, group_status)
+	SELECT
+	#{nextNum},
+	CASE
+	WHEN groups_pw IS NOT NULL THEN 'Y'
+	ELSE 'N'
+	END
+	FROM groups
+	WHERE groups_id = #{nextNum};
+    	</insert>
+    </mapper>

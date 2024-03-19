@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="groups">
+	<insert id="createGroup">
+		insert into groups(
+		groups_name,
+		groups_pw,
+		groups_host,
+		groups_invite_code
+		)
+		values(
+		#{groupsName},
+		#{groupsPw},
+		#{groupsHost},
+		#{groupsInviteCode}
+		)
+	</insert>
+
+	<select id="groupList" resultType="GroupResponseVO">
+		select
+		g.groups_id,g.groups_name,g.groups_host,g.groups_create_date,
+		gi.group_status from groups g
+		left join group_info gi on g.groups_id =
+		gi.groups_id
+		order by groups_id desc;
+	</select>
+
+	<select id="selectOne" resultType="GroupsDto">
+		select
+		groups_id,groups_name,groups_host,groups_create_date from groups
+		where
+		groups_id = #{groupId}
+	</select>
+
+	<select id="sequence" resultType="int">
+		SELECT AUTO_INCREMENT
+		FROM
+		information_schema.TABLES
+		WHERE TABLE_SCHEMA = 'drpaper'
+		AND TABLE_NAME
+		= 'groups';
+	</select>
+
+	<!-- 그룹 selectOne -->
+	<select id="findGroup" resultType="groupsDto">
+		select * from groups where
+		groups_id = #{groups_id}
+	</select>
+
+
+	<!-- 그룹 정보 조회를 위한 조인 -->
+	<select id="getGroupInfo" resultType="GroupInfoReqeustVO">
+		SELECT
+		g.groups_id,
+		g.groups_name,
+		g.groups_host,
+		g.groups_create_date,
+		gi.group_info_description,
+		gi.group_info_max_member,
+		gi.group_status,
+		COUNT(gm.client_email) AS member_count
+		FROM groups g
+		LEFT JOIN
+		group_info gi ON g.groups_id = gi.groups_id
+		LEFT JOIN group_member gm
+		ON g.groups_id = gm.groups_id
+		WHERE g.groups_id =
+		#{groupsId}
+	</select>
+
+	<select id="myGroup" resultType="GroupInfoReqeustVO">
+		SELECT
+		g.groups_id,
+		g.groups_name,
+		g.groups_host,
+		g.groups_create_date,
+		gi.group_info_description,
+		gi.group_info_max_member,
+		gi.group_status
+		FROM groups g
+		LEFT JOIN group_info gi ON g.groups_id = gi.groups_id
+		LEFT JOIN group_member gm ON g.groups_id = gm.groups_id
+		WHERE gm.client_email = #{clientEmail}
+	</select>
+</mapper>

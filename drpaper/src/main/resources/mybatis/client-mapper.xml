@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="client">
+
+	<insert id="createClient">
+		insert into
+		client(client_email,client_pw,client_name)
+		values(#{clientEmail},#{clientPw},#{clientName})
+	</insert>
+	<select id="find" resultType="ClientDto">
+		select * from client where client_email = #{clientEmail}
+	</select>
+</mapper>

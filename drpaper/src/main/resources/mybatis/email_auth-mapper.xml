@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="auth">
+
+	<select id="find" resultType="EmailAuthDto">
+		select * from email_auth where email = #{email}
+	</select>
+	
+	<delete id="deleteAuth">
+		delete from email_auth where email=#{email}
+	</delete>
+	
+	<insert id="createAuth">
+		insert into email_auth values(#{email},#{emailAuthCode})
+	</insert>
+</mapper>
